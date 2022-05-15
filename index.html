@@ -17,86 +17,86 @@
         }
         function toggleGetLink() {
 
-            const selectDate = document.getElementById('selectDate').value;
-            console.log(selectDate);
-            var year = '';
-            var month = '';
-            var day = '';
-            if(selectDate){
-                year = selectDate.split('-')[0];
-                month = selectDate.split('-')[1];
-                day = selectDate.split('-')[2];
-            }
-            else{
-                const output = document.querySelector('.tour-result');
-                output.innerHTML='';
-                alert('Chưa nhập ngày đi tour!');
-                return;
-            }
-            var monthAndYear = `${month}/${year}`
-            // handleAuthClick();
-            const url = 'https://docs.google.com/spreadsheets/d/';
-            const ssid = '1fisSZQwl0MfcfhFP4c4bmcDEnH_3HOpYAQvTEyiZY9M';
-            const q1 = `/gviz/tq?`;
-            const q2 = 'tqx=out:json';
-            const q3 = `sheet=${monthAndYear}`;
-            const query1 = `select A,B,C`;
-            const q4 = encodeURIComponent(query1);
-            console.log(q4);
+const selectDate = document.getElementById('selectDate').value;
+const errorDate = document.getElementById('errorDate');
+const phoneNumber = document.getElementById('phoneNumber').value;
+const errorPhone = document.getElementById('errorPhone');
+console.log(selectDate);
+var year = '';
+var month = '';
+if(selectDate){
+    year = selectDate.split('-')[0];
+    month = selectDate.split('-')[1];
+    errorDate.innerHTML = '';
+    errorDate.style.display = 'none';
+}
+else{
+    const output = document.querySelector('.tour-result');
+    output.innerHTML='';
+    errorDate.innerHTML = 'Chưa nhập ngày đi tour!'
+    errorDate.style.display = 'block';
+    return;
+}
 
-            var tourTitle = document.getElementById('tourDate');
-            console.log(`TOUR NGÀY ${day}/${month}/${year}`);
-            tourTitle.innerHTML = `TOUR NGÀY ${day}/${month}/${year}`;
+if(phoneNumber){
+    errorPhone.innerHTML = '';
+    errorPhone.style.display = 'none';
+}
+else{
+    const output = document.querySelector('.tour-result');
+    output.innerHTML='';
+    errorPhone.innerHTML = 'Chưa nhập số điện thoại khách hàng!'
+    errorPhone.style.display = 'block';
+    return;
+}
+var monthAndYear = `${month}/${year}`
+// handleAuthClick();
+const url = 'https://docs.google.com/spreadsheets/d/';
+const ssid = '15anzDS0qs9MQPjGq--2Ht1v8W3_TxChCl5bPsQLQVy4';
+const q1 = `/gviz/tq?`;
+const q2 = 'tqx=out:json';
+const q3 = `sheet=${monthAndYear}`;
+const query1 = `select A,B,C`;
+const q4 = encodeURIComponent(query1);
+console.log(q4);
 
-            const endpoint1 = `${url}${ssid}${q1}&${q2}&${q3}&tq=${q4}`;
+var tourTitle = document.getElementById('tourDate');
+tourTitle.innerHTML = `TOUR KHÁCH ${phoneNumber}`;
 
-            fetch(endpoint1)
-                .then(res => res.text())
-                .then(data => {
-                    var dataList = [];
-                    const temp = data.substr(47).slice(0, -2);
-                    const json = JSON.parse(temp);
-                    const rows = json.table.rows;
-                    console.log(rows);
-                    const output = document.querySelector('.tour-result');
-                    rows.shift();
-                    rows2 = rows.filter(row => row.c[0].v == `${day}/${month}/${year}`);
-                    console.log(rows2);
-                    output.innerHTML = '';
-                    rows2.forEach((row) => {
-                        const div = document.createElement('div');
-                        div.classList.add("tour-result-wrapper");
-                        const div2 = document.createElement('div');
-                        div2.classList.add("tour-result-item");
-                        const temp1 = row.c;
-                        var linkContent = `${temp1[1].v} <br> <a href="${temp1[2].v}" id="link1">${temp1[2].v}</a>`
-                        div2.innerHTML = linkContent;
-                        div.append(div2);
-                        output.append(div);
-                        changeStep();
+const endpoint1 = `${url}${ssid}${q1}&${q2}&${q3}&tq=${q4}`;
 
-                    })
-                    // dataList.shift();
-                    // const output = document.querySelector('.tour-result');
-                    // dataList.forEach((link) => {
-                    //     const div = document.createElement('div');
-                    //     div.classList.add("tour-result-wrapper");
-                    //     const div2 = document.createElement('div');
-                    //     div2.classList.add("tour-result-item");
-                    //     var linkContent = `${link.folderName.v} <br> <a href="${link.link.v}" id="link1">${link.link.v}</a>`
-                    //     div2.innerHTML = linkContent;
-                    //     div.append(div2);
+fetch(endpoint1)
+    .then(res => res.text())
+    .then(data => {
+        var dataList = [];
+        const temp = data.substr(47).slice(0, -2);
+        const json = JSON.parse(temp);
+        const rows = json.table.rows;
+        console.log(rows);
+        const output = document.querySelector('.tour-result');
+        rows.shift();
+        rows2 = rows.filter(row => row.c[0].v == `${phoneNumber}`);
+        console.log(rows2);
+        output.innerHTML = '';
+        rows2.forEach((row) => {
+            const div = document.createElement('div');
+            div.classList.add("tour-result-wrapper");
+            const div2 = document.createElement('div');
+            div2.classList.add("tour-result-item");
+            const temp1 = row.c;
+            var linkContent = `${temp1[1].v} <br> <a href="${temp1[2].v}" id="link1">${temp1[2].v}</a>`
+            div2.innerHTML = linkContent;
+            div.append(div2);
+            output.append(div);
+            changeStep();
 
-                    //     console.log(link);
-                    //     // div.innerHTML = link.folderName.v;
-                    //     output.append(div);
-                    // })
-                })
+        })
+    })
 
 
-            const el = document.querySelector('.tour-result');
-            el.style.display = 'block';
-        }
+const el = document.querySelector('.tour-result');
+el.style.display = 'block';
+}
     </script>
     <title>Title</title>
     <style>
@@ -302,8 +302,14 @@
         <div class="clearfix"></div>
         <div class="tour-register">
             <div class="tour-register__field">
-                <div class="tour-register__field-label">Nhập ngày đi tour:</div>
-                <input id="selectDate" type="date" class="tour-register__field-input datepicker">
+                <div class="tour-register__field-label">Nhập tháng đi tour:</div>
+                <input id="selectDate" type="month" class="tour-register__field-input datepicker">
+                <p id="errorDate" style="color:red ; display: none;"></p>
+            </div>
+            <div class="tour-register__field">
+                <div class="tour-register__field-label">Nhập số điện thoại:</div>
+                <input required id="phoneNumber" type="text" class="tour-register__field-input datepicker">
+                <p id="errorPhone" style="color:red ; display: none;"></p>
             </div>
             <button type="button" class="tour-register__btn-link" onclick="toggleGetLink()">Nhận link ảnh</button>
             <p id="tourDate" class="tour-result-title"></p>
@@ -318,7 +324,7 @@
         </div>
         <div class="tour-note">
             <p class="highlight-red tour-note__title">LƯU Ý:</p>
-            <li>Hình ảnh chỉ <span class="highlight-red">LƯU TỐI ĐA 2 THÁNG</span> sau khi đi tour. Sau 2 tháng chúng
+            <li>Hình ảnh chỉ <span class="highlight-red">LƯU TỐI ĐA 1 THÁNG</span> sau khi đi tour. Sau 1 tháng chúng
                 tôi sẽ
                 xóa hoàn toàn nên quý khách vui
                 lòng tải ngay sau khi có ảnh.
