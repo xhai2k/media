@@ -70,7 +70,7 @@
             const q1 = `/gviz/tq?`;
             const q2 = 'tqx=out:json';
             const q3 = `sheet=${monthAndYear}`;
-            const query1 = `select A,B,C`;
+            const query1 = `select A,B,C,D,E,F,G,H,I,J,K,L,M`;
             const q4 = encodeURIComponent(query1);
             // console.log(q4);
 
@@ -91,21 +91,33 @@
                     const output = document.querySelector('.tour-result');
                     rows.shift();
                     rows2 = rows.filter(row => row.c[0].v == `${phoneNumber}`);
-                    // console.log(rows2);
+                    console.log(rows2);
                     output.innerHTML = '';
-                    rows2.forEach((row) => {
-                        const div = document.createElement('div');
-                        div.classList.add("tour-result-wrapper");
-                        const div2 = document.createElement('div');
-                        div2.classList.add("tour-result-item");
-                        const temp1 = row.c;
-                        var linkContent = `${temp1[1].v} <br> <a href="${temp1[2].v}" id="link1">${temp1[2].v}</a>`
-                        div2.innerHTML = linkContent;
-                        div.append(div2);
-                        output.append(div);
+                    for (let index = 0; index < rows2.length; index++) {
+                        const temp1 = rows2[index].c;
+                        temp1.shift();
+                        // console.log(temp1);
+                        for (let index = 0; index < temp1.length; index += 2) {
+                            const div = document.createElement('div');
+                            div.classList.add("tour-result-wrapper");
+                            const div2 = document.createElement('div');
+                            div2.classList.add("tour-result-item");
+                            // console.log(index);
+                            if(temp1[index+1] === null || temp1[index+1].v === null){
+                                continue;
+                            }
+                            const folderName = temp1[index] !== null ? temp1[index].v : '';
+                            const linkValue = temp1[index+1] !== null ?  temp1[index + 1].v : '';
+
+                            var linkContent = `${folderName !== null ? folderName : ''} <br> <a href="${linkValue !== null ? linkValue : ''}" id="link1">${linkValue !== null ? linkValue : ''}</a>`
+                            div2.innerHTML = linkContent;
+                            div.append(div2);
+                            output.append(div);
+
+                        }
                         changeStep();
 
-                    })
+                    }
                 })
 
 
