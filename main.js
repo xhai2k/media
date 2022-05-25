@@ -77,7 +77,7 @@ function toggleGetLink() {
                     const folderName = temp1[index] !== null ? temp1[index].v : '';
                     const linkValue = temp1[index + 1] !== null ? temp1[index + 1].v : '';
 
-                    var linkContent = `${folderName !== null ? folderName : ''} <br> <a href="${linkValue !== null ? linkValue : ''}" id="link1">${linkValue !== null ? linkValue : ''}</a>`
+                    var linkContent = `<b>${folderName !== null ? folderName : ''}</b> <br> <a href="${linkValue !== null ? linkValue : ''}" id="link1">${linkValue !== null ? linkValue : ''}</a>`
                     div2.innerHTML = linkContent;
                     div.append(div2);
                     output.append(div);
