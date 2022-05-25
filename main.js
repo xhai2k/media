@@ -58,7 +58,11 @@ function toggleGetLink() {
             // console.log(rows);
             const output = document.querySelector('.tour-result');
             rows.shift();
-            rows2 = rows.filter(row => row.c[0].v == `${phoneNumber}`);
+            rows2 = rows.filter(row => {
+                if (row.c[0] !== null) {
+                    return row.c[0].v == `${phoneNumber}`
+                }
+            });
             console.log(rows2);
             output.innerHTML = '';
             for (let index = 0; index < rows2.length; index++) {
